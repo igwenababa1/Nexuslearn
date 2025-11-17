@@ -1,8 +1,9 @@
 
 import React, { createContext, useState, useEffect, useCallback, ReactNode } from 'react';
-import { generateQuiz, generateStudyGuide } from '../services/geminiService';
-import type { QuizData, StudyGuideData, GuideDepth, GuideFormat, QuizFormData, QuizBookmark } from '../types';
-import { useToasts, Toast } from '../hooks/useToast';
+import { generateQuiz, generateStudyGuide } from '../services/geminiService.ts';
+import type { QuizData, StudyGuideData, GuideDepth, GuideFormat, QuizFormData, QuizBookmark } from '../types.ts';
+import { useToasts } from '../hooks/useToast.ts';
+import type { Toast } from '../hooks/useToast.ts';
 
 export type Page = 'home' | 'guides' | 'tutor' | 'bookmarks' | 'about' | 'contact';
 export type Difficulty = 'easy' | 'medium' | 'hard';

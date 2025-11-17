@@ -1,6 +1,7 @@
 
 import React, { useContext } from 'react';
-import { AppContext, Page } from '../context/AppContext';
+import { AppContext } from '../context/AppContext.tsx';
+import type { Page } from '../context/AppContext.tsx';
 
 
 const NavButton: React.FC<{

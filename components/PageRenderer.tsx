@@ -1,12 +1,12 @@
 
 import React, { useContext } from 'react';
-import { AppContext } from '../context/AppContext';
-import HomePage from '../pages/HomePage';
-import AboutPage from '../pages/AboutPage';
-import ContactPage from '../pages/ContactPage';
-import StudyGuidePage from '../pages/StudyGuidePage';
-import TutorPage from '../pages/TutorPage';
-import BookmarksPage from '../pages/BookmarksPage';
+import { AppContext } from '../context/AppContext.tsx';
+import HomePage from '../pages/HomePage.tsx';
+import AboutPage from '../pages/AboutPage.tsx';
+import ContactPage from '../pages/ContactPage.tsx';
+import StudyGuidePage from '../pages/StudyGuidePage.tsx';
+import TutorPage from '../pages/TutorPage.tsx';
+import BookmarksPage from '../pages/BookmarksPage.tsx';
 
 const PageRenderer: React.FC = () => {
     const { currentPage } = useContext(AppContext);

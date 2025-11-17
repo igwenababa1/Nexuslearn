@@ -1,9 +1,9 @@
 
 import React, { useState, useRef, useEffect, useCallback } from 'react';
-import type { ChatMessage } from '../types';
-import { streamTutorResponse } from '../services/geminiService';
-import MessageBubble from '../components/chat/MessageBubble';
-import TypingIndicator from '../components/chat/TypingIndicator';
+import type { ChatMessage } from '../types.ts';
+import { streamTutorResponse } from '../services/geminiService.ts';
+import MessageBubble from '../components/chat/MessageBubble.tsx';
+import TypingIndicator from '../components/chat/TypingIndicator.tsx';
 
 const conversationStarters = [
     "Explain quantum computing like I'm five.",

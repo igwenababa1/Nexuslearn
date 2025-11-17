@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect, useCallback } from 'react';
-import { generateVideoSummary } from '../services/geminiService';
+import { generateVideoSummary } from '../services/geminiService.ts';
 
 interface VideoSummaryModalProps {
     topic: string;
@@ -52,7 +52,8 @@ const VideoSummaryModal: React.FC<VideoSummaryModalProps> = ({ topic, onClose })
         let isMounted = true;
         
         // Progress message cycling for 'generating' state
-        let interval: NodeJS.Timeout;
+        // Fix: Changed type from NodeJS.Timeout to `number | undefined` for browser compatibility.
+        let interval: number | undefined;
         if (status === 'generating') {
             let i = 0;
             interval = setInterval(() => {

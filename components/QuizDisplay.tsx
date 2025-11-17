@@ -1,10 +1,10 @@
 
 import React, { useState, useMemo, useEffect, useRef, useContext } from 'react';
-import type { QuizData, Question, QuizFormData } from '../types';
-import { generateVisualExplanation } from '../services/geminiService';
+import type { QuizData, Question, QuizFormData } from '../types.ts';
+import { generateVisualExplanation } from '../services/geminiService.ts';
 import html2pdf from 'html2pdf.js';
-import { AppContext } from '../context/AppContext';
-import VideoSummaryModal from './VideoSummaryModal';
+import { AppContext } from '../context/AppContext.tsx';
+import VideoSummaryModal from './VideoSummaryModal.tsx';
 
 interface QuizDisplayProps {
     quizData: QuizData;

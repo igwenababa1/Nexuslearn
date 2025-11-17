@@ -1,6 +1,6 @@
 
 import React, { useContext } from 'react';
-import { AppContext } from '../context/AppContext';
+import { AppContext } from '../context/AppContext.tsx';
 
 const BookmarksPage: React.FC = () => {
     const { bookmarks, loadBookmark, removeBookmark } = useContext(AppContext);

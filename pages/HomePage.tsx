@@ -1,10 +1,10 @@
 
 import React, { useContext, useCallback, useState, useRef, useEffect } from 'react';
-import type { QuestionType } from '../types';
-import { ALL_QUESTION_TYPES } from '../types';
-import { AppContext } from '../context/AppContext';
-import Checkbox from '../components/Checkbox';
-import QuizDisplay from '../components/QuizDisplay';
+import type { QuestionType } from '../types.ts';
+import { ALL_QUESTION_TYPES } from '../types.ts';
+import { AppContext } from '../context/AppContext.tsx';
+import Checkbox from '../components/Checkbox.tsx';
+import QuizDisplay from '../components/QuizDisplay.tsx';
 
 // SpeechRecognition API type is now in globals.d.ts
 const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;

@@ -1,8 +1,8 @@
 
 import React, { useContext, useCallback } from 'react';
-import { AppContext } from '../context/AppContext';
-import type { GuideDepth, GuideFormat } from '../types';
-import StudyGuideDisplay from '../components/StudyGuideDisplay';
+import { AppContext } from '../context/AppContext.tsx';
+import type { GuideDepth, GuideFormat } from '../types.ts';
+import StudyGuideDisplay from '../components/StudyGuideDisplay.tsx';
 
 const StudyGuidePage: React.FC = () => {
     const {

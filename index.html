@@ -122,6 +122,8 @@
   }
 }
 </script>
+<!-- Babel for in-browser TSX transpilation -->
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 </head>
 <body>
     <video autoplay muted loop id="bg-video">
@@ -130,6 +132,6 @@
     </video>
     <div id="bg-overlay"></div>
     <div id="root"></div>
-    <script type="module" src="/index.tsx"></script>
+    <script type="text/babel" data-type="module" src="/index.tsx"></script>
 </body>
 </html>

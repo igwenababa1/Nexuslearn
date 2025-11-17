@@ -1,7 +1,7 @@
 
 import React, { useEffect, useContext } from 'react';
-import { AppContext } from '../context/AppContext';
-import type { Toast } from '../hooks/useToast';
+import { AppContext } from '../context/AppContext.tsx';
+import type { Toast } from '../hooks/useToast.ts';
 
 const ToastMessage: React.FC<{ toast: Toast; onDismiss: (id: number) => void }> = ({ toast, onDismiss }) => {
     useEffect(() => {

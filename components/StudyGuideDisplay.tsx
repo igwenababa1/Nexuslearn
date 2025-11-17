@@ -1,9 +1,9 @@
 
 import React, { useState, useRef, useContext } from 'react';
-import type { StudyGuideData } from '../types';
+import type { StudyGuideData } from '../types.ts';
 import html2pdf from 'html2pdf.js';
-import { AppContext } from '../context/AppContext';
-import MarkdownRenderer from './MarkdownRenderer';
+import { AppContext } from '../context/AppContext.tsx';
+import MarkdownRenderer from './MarkdownRenderer.tsx';
 
 
 const StudyGuideDisplay: React.FC<{ guideData: StudyGuideData }> = ({ guideData }) => {

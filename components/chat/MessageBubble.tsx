@@ -1,7 +1,7 @@
 
 import React from 'react';
-import type { ChatMessage } from '../../types';
-import MarkdownRenderer from '../MarkdownRenderer';
+import type { ChatMessage } from '../../types.ts';
+import MarkdownRenderer from '../MarkdownRenderer.tsx';
 
 const MessageBubble: React.FC<{ message: ChatMessage }> = ({ message }) => {
     const isModel = message.role === 'model';

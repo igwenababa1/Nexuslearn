@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { AppContext } from '../context/AppContext';
+import { AppContext } from '../context/AppContext.tsx';
 
 // New FeatureCard component for the modernized links
 const FeatureCard: React.FC<{

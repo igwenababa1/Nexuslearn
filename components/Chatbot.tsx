@@ -1,9 +1,9 @@
 
 import React, { useState, useRef, useEffect, useCallback } from 'react';
-import type { ChatMessage } from '../types';
-import { streamChatResponse } from '../services/geminiService';
-import MessageBubble from './chat/MessageBubble';
-import TypingIndicator from './chat/TypingIndicator';
+import type { ChatMessage } from '../types.ts';
+import { streamChatResponse } from '../services/geminiService.ts';
+import MessageBubble from './chat/MessageBubble.tsx';
+import TypingIndicator from './chat/TypingIndicator.tsx';
 
 // SpeechRecognition API type is now in globals.d.ts
 const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;

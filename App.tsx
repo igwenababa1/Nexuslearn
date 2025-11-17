@@ -1,13 +1,12 @@
 
 import React from 'react';
-import { AppProvider } from './context/AppContext';
-import Header from './components/Header';
-import Footer from './components/Footer';
-import ChatbotFab from './components/Chatbot';
-import PageRenderer from './components/PageRenderer';
-import VoiceControl from './components/VoiceControl';
-import { ToastContainer } from './components/Toast';
-import MarkdownRenderer from './components/MarkdownRenderer';
+import { AppProvider } from './context/AppContext.tsx';
+import Header from './components/Header.tsx';
+import Footer from './components/Footer.tsx';
+import ChatbotFab from './components/Chatbot.tsx';
+import PageRenderer from './components/PageRenderer.tsx';
+import VoiceControl from './components/VoiceControl.tsx';
+import { ToastContainer } from './components/Toast.tsx';
 
 
 const App: React.FC = () => {

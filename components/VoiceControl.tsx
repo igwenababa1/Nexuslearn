@@ -1,7 +1,36 @@
 
 import React, { useContext, useMemo } from 'react';
-import useVoiceCommands from '../hooks/useVoiceCommands';
-import { AppContext, Page, Difficulty } from '../context/AppContext';
+import useVoiceCommands from '../hooks/useVoiceCommands.ts';
+import { AppContext } from '../context/AppContext.tsx';
+import type { Page, Difficulty } from '../context/AppContext.tsx';
+import type { QuestionType } from '../types.ts';
+
+// Helper function to parse question types from natural language
+const parseQuestionTypes = (typeString: string): { valid: QuestionType[], invalid: string[] } => {
+    const typeMap: { [key: string]: QuestionType } = {
+        'multiple choice': 'multiple-choice',
+        'true false': 'true-false',
+        'true or false': 'true-false',
+        'fill in the blank': 'fill-blank',
+        'fill blank': 'fill-blank',
+        'matching': 'matching',
+        'ordering': 'ordering',
+    };
+
+    const requestedTypes = typeString.split(/ and |,/i).map(t => t.trim().toLowerCase());
+    const valid: QuestionType[] = [];
+    const invalid: string[] = [];
+
+    for (const type of requestedTypes) {
+        if (typeMap[type]) {
+            valid.push(typeMap[type]);
+        } else if (type) {
+            invalid.push(type);
+        }
+    }
+    return { valid, invalid };
+};
+
 
 const VoiceControl: React.FC = () => {
     const {
@@ -16,12 +45,59 @@ const VoiceControl: React.FC = () => {
             command: ['navigate to * page', 'go to * page', 'show me the * page'],
             callback: (page: string) => {
                 const pageLower = page.toLowerCase().trim();
-                if (['home', 'guides', 'tutor', 'about', 'contact'].includes(pageLower)) {
+                if (['home', 'guides', 'tutor', 'bookmarks', 'about', 'contact'].includes(pageLower)) {
                     addToast(`Navigating to ${pageLower} page...`);
                     navigateTo(pageLower as Page);
                 } else {
                     addToast(`Sorry, I can't find the "${pageLower}" page.`, 'error');
                 }
+            }
+        },
+        // Combined, powerful commands (most specific first)
+        {
+            command: 'generate a * question quiz about * with *',
+            callback: (countStr: string, topic: string, typeStr: string) => {
+                const count = parseInt(countStr, 10);
+                const { valid: types, invalid } = parseQuestionTypes(typeStr);
+
+                if (isNaN(count) || count <= 0) {
+                    addToast(`"${countStr}" is not a valid number of questions.`, 'error');
+                    return;
+                }
+                if (invalid.length > 0) {
+                    addToast(`Could not recognize question type(s): ${invalid.join(', ')}.`, 'error');
+                }
+                 if (types.length === 0) {
+                    addToast(`No valid question types provided in "${typeStr}".`, 'error');
+                    return;
+                }
+                
+                addToast(`Generating a ${count}-question quiz about "${topic}" with ${types.join(', ')} types...`);
+                setFormDataQuiz(prev => ({...prev, topic, numQuestions: count, questionTypes: types}));
+                handleGenerateQuiz();
+            }
+        },
+        {
+            command: 'generate a * question quiz with *',
+            callback: (countStr: string, typeStr: string) => {
+                const count = parseInt(countStr, 10);
+                const { valid: types, invalid } = parseQuestionTypes(typeStr);
+
+                if (isNaN(count) || count <= 0) {
+                    addToast(`"${countStr}" is not a valid number of questions.`, 'error');
+                    return;
+                }
+                if (invalid.length > 0) {
+                    addToast(`Could not recognize question type(s): ${invalid.join(', ')}.`, 'error');
+                }
+                if (types.length === 0) {
+                    addToast(`No valid question types provided in "${typeStr}".`, 'error');
+                    return;
+                }
+                
+                addToast(`Generating a ${count}-question quiz with ${types.join(', ')} types...`);
+                setFormDataQuiz(prev => ({...prev, numQuestions: count, questionTypes: types}));
+                handleGenerateQuiz();
             }
         },
         {
@@ -39,11 +115,24 @@ const VoiceControl: React.FC = () => {
                 handleGenerateQuiz();
             }
         },
+        // Individual setters
         {
             command: 'set topic to *',
             callback: (topic: string) => {
                 addToast(`Setting topic to: ${topic}`);
                 setFormDataQuiz(prev => ({...prev, topic}));
+            }
+        },
+        {
+            command: 'set number of questions to *',
+            callback: (countStr: string) => {
+                const count = parseInt(countStr, 10);
+                if (!isNaN(count) && count > 0 && count <= 50) {
+                    addToast(`Setting number of questions to ${count}.`);
+                    setFormDataQuiz(prev => ({...prev, numQuestions: count}));
+                } else {
+                    addToast(`"${countStr}" is not a valid number (1-50).`, 'error');
+                }
             }
         },
         {
@@ -56,6 +145,46 @@ const VoiceControl: React.FC = () => {
                 } else {
                     addToast(`Invalid difficulty: "${difficulty}". Please say easy, medium, or hard.`, 'error');
                 }
+            }
+        },
+        {
+            command: ['add * questions', 'select * questions', 'include * questions'],
+            callback: (typeStr: string) => {
+                const { valid: typesToAdd, invalid } = parseQuestionTypes(typeStr);
+                if (invalid.length > 0) {
+                    addToast(`Could not recognize question type(s): ${invalid.join(', ')}.`, 'error');
+                }
+                if (typesToAdd.length > 0) {
+                    addToast(`Adding question type(s): ${typesToAdd.join(', ')}`);
+                    setFormDataQuiz(prev => {
+                        const newTypes = new Set([...prev.questionTypes, ...typesToAdd]);
+                        return {...prev, questionTypes: Array.from(newTypes)};
+                    });
+                }
+            }
+        },
+        {
+            command: ['remove * questions', 'unselect * questions', 'exclude * questions'],
+            callback: (typeStr: string) => {
+                const { valid: typesToRemove, invalid } = parseQuestionTypes(typeStr);
+                 if (invalid.length > 0) {
+                    addToast(`Could not recognize question type(s): ${invalid.join(', ')}.`, 'error');
+                }
+                if (typesToRemove.length > 0) {
+                    addToast(`Removing question type(s): ${typesToRemove.join(', ')}`);
+                    setFormDataQuiz(prev => {
+                        const typesToRemoveSet = new Set(typesToRemove);
+                        const newTypes = prev.questionTypes.filter(t => !typesToRemoveSet.has(t));
+                        return {...prev, questionTypes: newTypes};
+                    });
+                }
+            }
+        },
+        {
+            command: ['clear question types', 'reset question types'],
+            callback: () => {
+                addToast('Clearing all selected question types.');
+                setFormDataQuiz(prev => ({...prev, questionTypes: []}));
             }
         },
         {
